@@ -37,7 +37,7 @@ public class WhatsappRepository {
         try{
             if(user.containsKey(u.getMobile()))
             {
-                throw new RuntimeException("User already exists");
+                throw new RuntimeException();
             }
             else{
                 user.put(u.getMobile(),u);
@@ -45,7 +45,7 @@ public class WhatsappRepository {
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            System.out.println("User already exists");
         }
 
         return "SUCCESS";
@@ -85,17 +85,21 @@ public class WhatsappRepository {
 
     public int sendMessage(Message message, User sender, Group group) throws Exception{
 
+        //Throw "Group does not exist" if the mentioned group does not exist
+        //Throw "You are not allowed to send message" if the sender is not a member of the group
+        //If the message is sent successfully, return the final number of messages in that group.
+
         boolean isPresent = false;
 
         try{
             if(!groupUserMap.containsKey(group))
             {
-                throw new RuntimeException("Group does not exist");
+                throw new RuntimeException();
             }
         }
         catch(Exception e)
         {
-            System.out.println(e);
+            System.out.println("Group does not exist");
         }
 
         try{
@@ -125,12 +129,12 @@ public class WhatsappRepository {
             }
              if(isPresent==false){
 
-                throw new RuntimeException("You are not allowed to send message");
+                throw new RuntimeException();
             }
         }
         catch(Exception e)
         {
-            System.out.println(e);
+            System.out.println("You are not allowed to send message");
         }
         return groupMessageMap.get(group).size();
     }
@@ -144,24 +148,24 @@ public class WhatsappRepository {
         try{
             if(!adminMap.containsKey(group))
             {
-                throw new RuntimeException("Group does not exist");
+                throw new RuntimeException();
             }
         }
         catch(Exception e){
-            System.out.println(e);
+            System.out.println("Group does not exist");
         }
         try{
             if(adminMap.containsKey(group))
             {
                 if(adminMap.get(group).getName().equals(approver.getName())==false)
                 {
-                    throw new RuntimeException("Approver does not have rights");
+                    throw new RuntimeException();
                 }
             }
         }
         catch(Exception e)
         {
-            System.out.println(e);
+            System.out.println("Approver does not have rights");
         }
 
         try{
@@ -177,12 +181,12 @@ public class WhatsappRepository {
                 }
             }
             else {
-                throw new RuntimeException("User is not a participant");
+                throw new RuntimeException();
             }
         }
         catch(Exception e)
         {
-            System.out.println(e);
+            System.out.println("User is not a participant");
         }
 
         if(adminMap.containsKey(group) && adminMap.get(group).getName().equals(approver.getName()))
