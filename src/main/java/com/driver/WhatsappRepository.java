@@ -123,7 +123,7 @@ public class WhatsappRepository {
                    }
                }
             }
-            else if(isPresent==false){
+             if(isPresent==false){
 
                 throw new RuntimeException("You are not allowed to send message");
             }
