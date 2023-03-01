@@ -85,6 +85,8 @@ public class WhatsappRepository {
 
     public int sendMessage(Message message, User sender, Group group) throws Exception{
 
+        boolean isPresent = false;
+
         try{
             if(!groupUserMap.containsKey(group))
             {
@@ -105,6 +107,7 @@ public class WhatsappRepository {
                {
                    if(i.getName().equals(givenUser.getName()))
                    {
+                       isPresent = true;
                        senderMap.put(message,sender);
                        if(groupMessageMap.containsKey(group))
                        {
@@ -120,7 +123,7 @@ public class WhatsappRepository {
                    }
                }
             }
-            else {
+            else if(isPresent==false){
 
                 throw new RuntimeException("You are not allowed to send message");
             }
