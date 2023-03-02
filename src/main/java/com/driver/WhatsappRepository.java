@@ -110,7 +110,7 @@ public class WhatsappRepository {
                User givenUser = sender;
                for(User i : list)
                {
-                   if(i.getName().equals(givenUser.getName()))
+                   if(i.equals(givenUser))
                    {
                        isPresent = true;
                        senderMap.put(message,sender);
