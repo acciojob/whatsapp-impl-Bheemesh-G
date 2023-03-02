@@ -102,34 +102,9 @@ public class WhatsappRepository {
         {
             System.out.println("Group does not exist");
         }
-
         try{
-            if(groupUserMap.containsKey(group))
+            if(!userExistsInGroup(group,sender))
             {
-               List<User> list = groupUserMap.get(group);
-               User givenUser = sender;
-               for(User i : list)
-               {
-                   if(i.equals(givenUser))
-                   {
-                       isPresent = true;
-                       senderMap.put(message,sender);
-                       if(groupMessageMap.containsKey(group))
-                       {
-                           List<Message> l = groupMessageMap.get(group);
-                           l.add(message);
-                           groupMessageMap.put(group,l);
-                       }
-                       else {
-                           List<Message> l = new ArrayList<>();
-                           l.add(message);
-                           groupMessageMap.put(group,l);
-                       }
-                   }
-               }
-            }
-             if(isPresent==false){
-
                 throw new RuntimeException();
             }
         }
@@ -137,9 +112,26 @@ public class WhatsappRepository {
         {
             System.out.println("You are not allowed to send message");
         }
-        return groupMessageMap.get(group).size();
-    }
+        List<Message> messages = new ArrayList<>();
+        if(groupMessageMap.containsKey(group)) messages = groupMessageMap.get(group);
 
+        messages.add(message);
+        groupMessageMap.put(group, messages);
+        return messages.size();
+    }
+   public boolean userExistsInGroup(Group group,User sender)
+   {
+       List<User> users = groupUserMap.get(group);
+       for(User user:users)
+       {
+           if(user.equals(sender))
+           {
+               return true;
+           }
+       }
+
+       return false;
+   }
     public String changeAdmin(User approver, User user, Group group) throws Exception{
         //Throw "Group does not exist" if the mentioned group does not exist
         //Throw "Approver does not have rights" if the approver is not the current admin of the group
